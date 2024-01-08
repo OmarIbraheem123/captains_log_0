@@ -21,6 +21,20 @@ mongoose.connection.once('open', () => {
 })
 
 
+/// INDEX 
+app.get('/logs', async (req, res) => {
+   try {
+    const foundLogs = await Log.find({})
+    res.render('logs/Index', {
+        logs : foundLogs
+    })
+   } catch (error) {
+    res.render(400).send ({message : error.message})
+   }
+})
+
+
+
 
 
 //NEW
@@ -39,14 +53,24 @@ app.post('/logs', async (req, res) => {
     }
     try {
         const createdLog = await Log.create(req.body)
-        res.redirect(`/logs/Show/${createdLog._id}`)
+        res.redirect(`/logs/${createdLog._id}`)
     } catch (error) {
         res.status(400).send({message : error.message})
     }
     // res.send(req.body)
 } )
 
-//
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(PORT, () => {
     console.log(`The PORT at ${PORT} is working`)
