@@ -1,16 +1,19 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-// const methodOverride = require('method-override')
+const methodOverride = require('method-override')
 const jsxEngine = require('jsx-view-engine')//needed to set up jsxEngineyes
 const Log = require('./models/logs')
 const PORT = 3000
 
 
 const app = express()
+
+
 app.set('view engine', 'jsx')//needed to set up jsxEngine
 app.engine('jsx', jsxEngine())//needed to set up jsxEngine
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 
 
@@ -38,7 +41,26 @@ app.get('/logs', async (req, res) => {
 app.get('/logs/new', (req, res) => {
     res.render('New')
 })
-
+//DELETE
+app.delete('/fruits/:id', async (req, res) => {
+    try {
+        await log.findOneAndDelete({'_id': req.params.id})
+        .then(() => {
+            res.redirect('/logs')
+        })
+    } catch (error) {
+        res.status(400).send({message: error.message})
+    }
+    try {
+        await log.findOneAndUpdate({'_id': req.params.id }, 
+            req.body, { new: true})
+            .then(() => {
+                res.redirect(`/logs/${req.params.id}`)
+            })
+    } catch (error) {
+        res.status(400).send({message: error.message})
+    }
+})
 
 //CREATE
 app.post('/logs', async (req, res) => {
@@ -63,7 +85,7 @@ app.post('/logs', async (req, res) => {
 app.get('/logs/:id', async (req, res) => {
     try {
         const foundLogs = await Log.findOne({_id: req.params.id})
-        res.render('logs/Show', {
+        res.render('logs', {
             log: foundLogs
         })
     } catch (error) {

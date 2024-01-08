@@ -5,6 +5,9 @@ function Index (props) {
         <div>
             <h1>Logs Index Page</h1>
             <a href='/logs/Show'>Create A New Log Here </a>
+            <form action={`/logs/${props.log._id}?_method=DELETE`} method="post">
+                <input type="submit" value={`Delete this ${props.log.Title}`} />
+            </form>
             <ul>
                 {
                     props.logs.map((log) => {
