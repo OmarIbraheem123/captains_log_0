@@ -34,9 +34,6 @@ app.get('/logs', async (req, res) => {
 })
 
 
-
-
-
 //NEW
 app.get('/logs/new', (req, res) => {
     res.render('New')
@@ -45,7 +42,6 @@ app.get('/logs/new', (req, res) => {
 
 //CREATE
 app.post('/logs', async (req, res) => {
-    
     if (req.body.shipIsBroken === 'on') {
         req.body.shipIsBroken = true
     } else {
@@ -59,7 +55,21 @@ app.post('/logs', async (req, res) => {
     }
     // res.send(req.body)
 } )
+//EDIT
 
+
+
+//SHOW
+app.get('/logs/:id', async (req, res) => {
+    try {
+        const foundLogs = await Log.findOne({_id: req.params.id})
+        res.render('logs/Show', {
+            log: foundLogs
+        })
+    } catch (error) {
+        res.status(400).send({message : error.message})
+    }
+})
 
 
 

@@ -4,13 +4,13 @@ function Index (props) {
     return(
         <div>
             <h1>Logs Index Page</h1>
-            <a href='/logs/new'>Create A New Log Here </a>
+            <a href='/logs/Show'>Create A New Log Here </a>
             <ul>
                 {
                     props.logs.map((log) => {
                         return(
                             <li key={logs._id}>
-                                <a href={`/logs/${log_id}`}>{log.title}</a>
+                                <a href={`/logs/${log_id}`}>{log.Title}</a>
                             </li>
                         )
                     })
