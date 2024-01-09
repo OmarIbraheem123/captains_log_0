@@ -5,6 +5,7 @@ function Index (props) {
         <div>
             <h1>Logs Index Page</h1>
             <a href='/logs/Show'>Create A New Log Here </a>
+            <a href='/logs/:id/edit'>Create A New Log Here </a>
             <form action={`/logs/${props.log._id}?_method=DELETE`} method="post">
                 <input type="submit" value={`Delete this ${props.log.Title}`} />
             </form>
@@ -13,7 +14,7 @@ function Index (props) {
                     props.logs.map((log) => {
                         return(
                             <li key={logs._id}>
-                                <a href={`/logs/${log_id}`}>{log.Title}</a>
+                                <a href={`/logs/${log._id}`}>{log.Title}</a>
                             </li>
                         )
                     })

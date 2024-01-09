@@ -41,6 +41,15 @@ app.get('/logs', async (req, res) => {
 app.get('/logs/new', (req, res) => {
     res.render('New')
 })
+//UPDATE
+app.put('/logs/:id', async (req, res) => {
+    if (req.body.shipIsBroken === 'on') {
+        req.body.shipIsBroken = true
+    } else {
+        req.body.shipIsBroken = false
+    }
+})
+
 //DELETE
 app.delete('/fruits/:id', async (req, res) => {
     try {
@@ -78,14 +87,22 @@ app.post('/logs', async (req, res) => {
     // res.send(req.body)
 } )
 //EDIT
-
-
+app.get('/logs/:id/edit', async (req, res) =>{
+    try {
+        const foundLogs = await Log.findOne({'_id': req.params.id})
+        res.render('logs/Edit' , {
+            log: foundLogs
+        })
+    } catch (error) {
+        res.status(400).send({message: error.message})
+    }
+})
 
 //SHOW
 app.get('/logs/:id', async (req, res) => {
     try {
         const foundLogs = await Log.findOne({_id: req.params.id})
-        res.render('logs', {
+        res.render('logs/Show', {
             log: foundLogs
         })
     } catch (error) {
